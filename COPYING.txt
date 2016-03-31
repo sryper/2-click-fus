@@ -15,5 +15,5 @@
 ::
 ::      http://www.gnu.org/licenses/agpl.html
 ::
-::	Send bug reports to the author mailto:sr13000 (at) hotmail.com.MAPSON
+::	Send bug reports to the author mailto:sr13000 (at) outlook.com.MAPSON
 ::      (remove text ".MAPSON" for address)
