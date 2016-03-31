@@ -22,6 +22,7 @@ set Usage = %0 [/T] [menu-selection]
 ::    tscon
 ::    tsdiscon
 ::    TMPFILE
+::    TMPFILE2
 ::
 ::  Modifications:
 ::
