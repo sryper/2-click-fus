@@ -1,7 +1,4 @@
     @echo %DBGI% off
-    VERIFY OTHER 2>nul
-    Setlocal EnableExtensions EnableDelayedExpansion
-    IF ERRORLEVEL 1 goto errmsg1  
 ::  Purpose:
 ::    Fast user switch
 ::
@@ -13,9 +10,12 @@ set Usage = %0 [/T] [menu-selection]
 ::    RC=0|1
 ::
 ::  Notes:
-::    Before first use customise value of passwlist.
-::    If user is not logged it will do "tsdiscon" and then your need 
-::    to login as that user.
+::  .  Before first use customise value of passwlist.
+::  .  If user is not logged it will do "tsdiscon" and then your need 
+::     to login as that user.
+::  .  Github version of fus.bat (no pwd list) 
+::     https://github.com/sryper/2-click-fus
+::  .  http://stackoverflow.com/questions/36244439/windows-batch-file-for-login-shortcut#comment60129622_36244439
 ::
 ::  Files used or called:
 ::    tasklist
@@ -32,8 +32,14 @@ set Usage = %0 [/T] [menu-selection]
 ::                        First release, tested on WIN XP
 ::  09:06 31/03/2016 1.02 S. Ryper
 ::                        add commandline option for menu
+::  03:28 03/04/2016 1.03 S. Ryper
+::                        missing quote on sort
 ::
     :: set a dummy nonzero errorlevel
+    VERIFY OTHER 2>nul
+    Setlocal EnableExtensions EnableDelayedExpansion
+    IF ERRORLEVEL 1 goto errmsg1  
+
     set TMPFILE=%temp%\%~nx0_%random%.txt
     set TMPFILE2=%temp%\%~nx0_%random%.txt
     set rc=1
@@ -79,7 +85,7 @@ set Usage = %0 [/T] [menu-selection]
         )
     )
     rem sort by username so can pass selection number on shortcut
-    sort "%tmpfile2%" /O %tmpfile%"
+    sort "%tmpfile2%" /O "%tmpfile%"
     for /f "tokens=1 usebackq delims=:" %%k in ( "%TMPFILE%" ) do (
         rem showlist=!showlist! "!uname!" "!sessnum!" "!sessname!" 
         set showlist=!showlist! %%k
@@ -114,9 +120,11 @@ set Usage = %0 [/T] [menu-selection]
     goto fin
 
 ::-- begin subroutine --
+:--------------------------------------------------
 :lstrip var="quoted-string-to-strip-leading-spaces"
+:--------------------------------------------------
     Setlocal EnableExtensions EnableDelayedExpansion
-    echo %dbgi% off
+    @echo %dbgi% off
     set result=%~1
     set str=%~2
 
@@ -135,10 +143,12 @@ set Usage = %0 [/T] [menu-selection]
 
 
 ::-- begin subroutine --
+:------------------------------------------------
 :showusers var=("uname" "sessnum" "sessname") ...
+:------------------------------------------------
     rem returns tuple count
     Setlocal EnableExtensions EnableDelayedExpansion
-    echo %dbgi% off
+    @echo %dbgi% off
     set result=%~1
     shift /1
     set i=0
@@ -165,10 +175,12 @@ set Usage = %0 [/T] [menu-selection]
 
 
 ::-- begin subroutine --
+:--------------------------------------------------------
 :selectuser rownum var=("uname" "sessnum" "sessname") ...
+:--------------------------------------------------------
     rem returns tuple count
     Setlocal EnableExtensions EnableDelayedExpansion
-    echo %dbgi% off
+    @echo %dbgi% off
     set select=%~1
     set result=%~2
     shift /1
@@ -207,10 +219,12 @@ set Usage = %0 [/T] [menu-selection]
 
 
 ::-- begin subroutine --
+:-----------------------------------------
 :getpass selection var=("uname" "pw" ) ...
+:-----------------------------------------
     rem returns tuple count
     Setlocal EnableExtensions EnableDelayedExpansion
-    echo %dbgi% off
+    @echo %dbgi% off
     set result=%~1
     set selection=%~2
     shift /1
